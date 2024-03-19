@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Función para mostrar el menú y obtener la opción seleccionada
+mostrar_menu() {
+    opcion=$(whiptail --title "Selección de Fondo de Pantalla" --menu "Elige una opción:" 15 50 3 \
+        "Imagen1" "Establecer el fondo de pantalla con la imagen 1" \
+        "Imagen2" "Establecer el fondo de pantalla con la imagen 2" \
+        "Salir" "Salir del programa" \
+        3>&1 1>&2 2>&3)
+    echo "$opcion"
+}
+
+# Obtener la opción del menú
+opcion_seleccionada=$(mostrar_menu)
+
+# Determinar la acción a realizar según la opción seleccionada
+case $opcion_seleccionada in
+    "Imagen1")
+        imagen="/home/olivier/img1.jpg"
+        ;;
+    "Imagen2")
+        imagen="/home/olivier/img2.jpg"
+        ;;
+    "Salir")
+        echo "Saliendo del programa."
+        exit 0
+        ;;
+    *)
+        echo "Opción no válida."
+        exit 1
+        ;;
+esac
+
+# Cambiar el fondo de pantalla utilizando gsettings
+gsettings set org.gnome.desktop.background picture-uri "file://$imagen"
+
+# Mostrar mensaje de éxito
+echo "Fondo de pantalla cambiado correctamente a: $imagen"
